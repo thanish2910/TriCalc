@@ -43,3 +43,33 @@
 .ti-dpad button:nth-of-type(5){grid-column:2;grid-row:3}
 @media(min-width:760px){.key-row{gap:8px}.ti-dpad{grid-template-rows:repeat(3,19px);max-width:116px}}
 @media(max-width:420px){.key-row{gap:5px}.ti-dpad{grid-template-rows:repeat(3,14px);gap:1px;padding:2px}.ti-dpad button{font-size:9px}.keypad-cw,.keypad-ti,.keypad-es{gap:5px}}
+
+
+/* Exact calculator photos with invisible, responsive key hit areas. Keep the image ratio unchanged. */
+.calculator-image-stage{max-width:520px;margin:10px auto 24px}
+.calculator-photo{position:relative;width:100%;line-height:0}
+.calculator-photo-img{display:block;width:100%;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none}
+.photo-hit-area{position:absolute;left:20%;right:20%;top:38%;height:55%;display:flex;flex-direction:column;justify-content:space-between;line-height:normal}
+.photo-key-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;flex:1;min-height:0;align-items:stretch}
+.photo-key-row .key{width:100%;height:100%;min-height:0;padding:0;border:0;border-radius:50%;background:transparent!important;color:transparent!important;box-shadow:none!important;font-size:0!important;opacity:0;touch-action:manipulation}
+.photo-key-row .key:focus-visible{opacity:.28;outline:2px solid #8fc7ff!important;background:#8fc7ff!important}
+.photo-display{position:absolute;left:24%;top:12%;width:48%;height:10%;padding:2px 5px;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden;line-height:1.1;color:#1c251b;background:rgba(218,229,210,.82);font-family:'DM Mono',monospace;pointer-events:none}
+.photo-display-status{font-size:clamp(6px,1.4vw,9px);opacity:.75;text-align:right}
+.photo-display-expression{font-size:clamp(8px,2.3vw,15px);white-space:nowrap;overflow:hidden;text-overflow:clip}
+.photo-display-answer{font-size:clamp(10px,2.8vw,18px);text-align:right;white-space:nowrap;overflow:hidden}
+.image-ti .photo-hit-area{left:23%;right:22%;top:34%;height:54%}
+.image-ti .photo-display{left:25%;top:13%;width:49%;height:19%}
+.image-es .photo-hit-area{left:25%;right:24%;top:39%;height:55%}
+.image-es .photo-display{left:24%;top:17%;width:51%;height:16%}
+.image-cw .photo-hit-area{left:23%;right:22%;top:37%;height:56%}
+.image-cw .photo-display{left:24%;top:18%;width:49%;height:11%}
+.photo-dpad{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));gap:0;position:relative}
+.photo-dpad button{border:0;background:transparent;opacity:0;min-width:0;min-height:0;padding:0}
+.photo-dpad button:nth-child(1){grid-column:2;grid-row:1}
+.photo-dpad button:nth-child(2){grid-column:1;grid-row:2}
+.photo-dpad button:nth-child(3){grid-column:2;grid-row:2}
+.photo-dpad button:nth-child(4){grid-column:3;grid-row:2}
+.photo-dpad button:nth-child(5){grid-column:2;grid-row:3}
+.image-controls{display:flex;gap:7px;justify-content:center;margin-top:10px}
+.image-controls button{border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:8px;padding:7px 11px;font-size:11px}
+.image-notice{margin:6px 0;text-align:center;color:var(--muted);font-size:11px;line-height:1.4}
