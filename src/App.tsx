@@ -108,7 +108,7 @@ export default function App() {
     if (key==='%') {setExpr(v=>v+'%');return}
     if (key==='10^x') {setExpr(v=>v+'10^(');return}
     if (key==='e^x') {setExpr(v=>v+'e^(');return}
-    if (key==='∛') {setExpr(v=>v+'nthRoot(');return}
+    if (key==='∛') {setExpr(v=>v+'cbrt(');return}
     if (key==='x√') {setExpr(v=>v+'nthRoot(');return}
     if (key==='□/□') {setExpr(v=>v+'(1/2)');return}
     if (key==='π') {setExpr(v=>v+'π');return}
