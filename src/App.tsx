@@ -56,8 +56,8 @@ function toExpression(raw: string, degrees: boolean) {
     .replace(/π/g,'pi').replace(/\bAns\b/g,'ans').replace(/(\d)\s*%/g,'($1/100)')
     .replace(/\bln\(/g,'log(').replace(/\blog\(/g,'log10(');
   if (degrees) {
-    for (const fn of ['sin','cos','tan']) s = s.replace(new RegExp('\\\\b'+fn+'\\\\(([^()]*)\\\\)','g'), '('+fn+'((($1)*pi/180)))');
-    for (const fn of ['asin','acos','atan']) s = s.replace(new RegExp('\\\\b'+fn+'\\\\(([^()]*)\\\\)','g'), '(('+fn+'($1))*180/pi)');
+    for (const fn of ['sin','cos','tan']) s = s.replace(new RegExp('\\b'+fn+'\\(([^()]*)\\)','g'), '('+fn+'((($1)*pi/180)))');
+    for (const fn of ['asin','acos','atan']) s = s.replace(new RegExp('\\b'+fn+'\\(([^()]*)\\)','g'), '(('+fn+'($1))*180/pi)');
   }
   return s;
 }
