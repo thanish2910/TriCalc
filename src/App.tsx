@@ -17,8 +17,9 @@ const keys: Record<Mode, string[][]> = {
     ['ON','HOME','SETTINGS','BACK','FORMAT'],
     ['VARIABLE','FUNCTION','CATALOG','TOOLS','EXE'],
     ['x','□/□','x²','x^□','√'],
-    ['log','ln','sin','cos','tan'],
-    ['(-)','°′″','π','EXP','÷'],
+    ['sin⁻¹','cos⁻¹','tan⁻¹','log','ln'],
+    ['sin','cos','tan','π','÷'],
+    ['(-)','x!','%','EXP','×'],
     ['7','8','9','DEL','×'],
     ['4','5','6','AC','−'],
     ['1','2','3','Ans','+'],
@@ -40,9 +41,10 @@ const keys: Record<Mode, string[][]> = {
   es: [
     ['SHIFT','ALPHA','MODE','SETUP','ON'],
     ['CALC','∫','d/dx','x⁻¹','nCr'],
-    ['√','x²','x^□','log','ln'],
-    ['(-)','°′″','hyp','sin','cos'],
-    ['tan','RCL','ENG','(',' )'],
+    ['√','∛','x²','x^□','x√'],
+    ['log','ln','10^x','e^x','π'],
+    ['sin⁻¹','cos⁻¹','tan⁻¹','sin','cos'],
+    ['tan','RCL','ENG','x!','%'],
     ['7','8','9','DEL','÷'],
     ['4','5','6','AC','×'],
     ['1','2','3','Ans','−'],
@@ -102,12 +104,18 @@ export default function App() {
     if (key==='x²') {setExpr(v=>v+'^2');return}
     if (key==='x⁻¹') {setExpr(v=>v+'^(-1)');return}
     if (key==='x^□') {setExpr(v=>v+'^(');return}
-    if (key==='□/□') {setExpr(v=>v+'(/');return}
+    if (key==='x!') {setExpr(v=>v+'!');return}
+    if (key==='%') {setExpr(v=>v+'%');return}
+    if (key==='10^x') {setExpr(v=>v+'10^(');return}
+    if (key==='e^x') {setExpr(v=>v+'e^(');return}
+    if (key==='∛') {setExpr(v=>v+'nthRoot(');return}
+    if (key==='x√') {setExpr(v=>v+'nthRoot(');return}
+    if (key==='□/□') {setExpr(v=>v+'(1/2)');return}
     if (key==='π') {setExpr(v=>v+'π');return}
     if (key==='×10ˣ' || key==='EE' || key==='EXP') {setExpr(v=>v+'e');return}
     if (key==='X,T,θ,n' || key==='x') {setExpr(v=>v+'x');return}
-    if (['sin','cos','tan','SIN','COS','TAN','log','LOG','ln','LN'].includes(key)) {
-      const fn=key.toLowerCase(); setExpr(v=>v+(fn==='ln'?'ln':fn)+'(');return;
+    if (['sin','cos','tan','SIN','COS','TAN','sin⁻¹','cos⁻¹','tan⁻¹','log','LOG','ln','LN'].includes(key)) {
+      const fn=key.toLowerCase().replace('⁻¹',''); setExpr(v=>v+(key.includes('⁻¹')?'a'+fn:fn)+'(');return;
     }
     if (key==='GRAPH' || key==='Y=' || key==='TRACE' || key==='ZOOM' || key==='WINDOW' || key==='TABLE') {setTab('graphs');return}
     if (key==='SETUP' || key==='MODE' || key==='SETTINGS') {setTab('settings');return}
@@ -153,7 +161,7 @@ export default function App() {
     <header className="topbar"><div className="brand-mark">T<span>∑</span></div><div className="brand-copy"><strong>TriCalc</strong><small>THREE MODES. ONE TOOLKIT.</small></div><div className="top-actions"><button className="icon-button" onClick={()=>setDark(v=>!v)} aria-label="Toggle theme">{dark?'☼':'☾'}</button><button className="icon-button" onClick={()=>setTab('settings')} aria-label="Settings">⚙</button></div></header>
     <div className="mode-strip" role="tablist" aria-label="Calculator mode">{modes.map(m=><button key={m} className={'mode-tab '+(mode===m?'selected':'')} onClick={()=>{setMode(m);setNotice('')}}><span className="mode-dot">{m==='ti'?'ƒ':m==='cw'?'C':'∑'}</span><span><b>{modeInfo[m].title}</b><small>{modeInfo[m].subtitle}</small></span></button>)}</div>
     <main className="main">
-      {tab==='calc'&&<section className={'calculator-shell shell-'+mode}><div className="calculator-label"><span>{modeInfo[mode].brand}</span><span className="battery">▰ ▰ ▱</span></div><div className="display"><div className="display-status"><span>{degrees?'DEG':'RAD'} · MATH</span><span>{mode==='ti'?'NORMAL · REAL':'MathI/MathO'}</span></div><div className="expression" aria-label="Expression">{expr||'0'}<span className="cursor">▏</span></div><div className="answer">{result}</div>{notice&&<div className="notice">{notice}</div>}</div><div className="display-controls"><button onClick={()=>setDegrees(v=>!v)}>{degrees?'DEG':'RAD'}</button><button onClick={()=>setTab('history')}>↶ History</button><button onClick={()=>setExpr(v=>v+'π')}>π</button><button onClick={()=>setExpr(v=>v+'e')}>e</button></div><div className={'keypad keypad-'+mode}>{keys[mode].flat().map((key,i)=><button key={key+'-'+i} className={'key '+(/^[0-9.]$/.test(key)?'number ':'')+(['=','ENTER'].includes(key)?'equals ':'')+(['AC','DEL'].includes(key)?'function-key ':'')+(['÷','×','−','+','^','x²','√','√(','sin','cos','tan','log','ln'].includes(key)?'operator ':'')+(['SHIFT','2nd','ALPHA','SETUP','MENU','OPTN','MATH','MODE','ON','Y=','WINDOW','ZOOM','TRACE','GRAPH','HOME','BACK','FORMAT','VARIABLE','FUNCTION','CATALOG','TOOLS','EXE','SETTINGS','PRGM','VARS','STAT','CLEAR','QUIT'].includes(key)?'tiny ':'')+(['↑','↓','←','→','OK'].includes(key)?'cursor-key':'')} onClick={()=>press(key)}>{key}</button>)}</div><div className="shell-footer"><span>Natural display · scientific functions</span><span>TRICALC / {mode.toUpperCase()}</span></div></section>}
+      {tab==='calc'&&<section className={'calculator-shell shell-'+mode}><div className="calculator-label"><span>{modeInfo[mode].brand}</span><span className="battery">▰ ▰ ▱</span></div><div className="display"><div className="display-status"><span>{degrees?'DEG':'RAD'} · MATH</span><span>{mode==='ti'?'NORMAL · REAL':'MathI/MathO'}</span></div><div className="expression" aria-label="Expression">{expr||'0'}<span className="cursor">▏</span></div><div className="answer">{result}</div>{notice&&<div className="notice">{notice}</div>}</div><div className="display-controls"><button onClick={()=>setDegrees(v=>!v)}>{degrees?'DEG':'RAD'}</button><button onClick={()=>setTab('history')}>↶ History</button><button onClick={()=>setExpr(v=>v+'π')}>π</button><button onClick={()=>setExpr(v=>v+'e')}>e</button></div><div className={'keypad keypad-'+mode}>{keys[mode].flat().map((key,i)=><button key={key+'-'+i} className={'key '+(/^[0-9.]$/.test(key)?'number ':'')+(['=','ENTER'].includes(key)?'equals ':'')+(['AC','DEL'].includes(key)?'function-key ':'')+(['÷','×','−','+','^','x²','x^□','√','√(','∛','x√','sin','cos','tan','sin⁻¹','cos⁻¹','tan⁻¹','log','ln','10^x','e^x'].includes(key)?'operator ':'')+(['SHIFT','2nd','ALPHA','SETUP','MENU','OPTN','MATH','MODE','ON','Y=','WINDOW','ZOOM','TRACE','GRAPH','HOME','BACK','FORMAT','VARIABLE','FUNCTION','CATALOG','TOOLS','EXE','SETTINGS','PRGM','VARS','STAT','CLEAR','QUIT'].includes(key)?'tiny ':'')+(['↑','↓','←','→','OK'].includes(key)?'cursor-key':'')} onClick={()=>press(key)}>{key}</button>)}</div><div className="shell-footer"><span>Natural display · scientific functions</span><span>TRICALC / {mode.toUpperCase()}</span></div></section>}
       {tab==='graphs'&&<section className="panel graph-panel"><div className="panel-heading"><div><p className="eyebrow">TI-84 PLUS STYLE</p><h1>Function graphing</h1><p className="muted">Plot multiple real-valued functions and explore their shape.</p></div><span className="panel-icon">ƒ(x)</span></div><div className="function-inputs">{graphFns.map((f,i)=><label key={i}><span>Y{i+1}=</span><input value={f} placeholder={i===0?'sin(x)':i===1?'x^2':''} onChange={e=>setGraphFns(old=>old.map((v,j)=>i===j?e.target.value:v))}/></label>)}</div><div className="range-row"><label>Window ±{graphRange}</label><input type="range" min="2" max="30" value={graphRange} onChange={e=>setGraphRange(Number(e.target.value))}/><button onClick={()=>setGraphRange(10)}>Reset</button></div><div className="plot-wrap"><Plot data={plotData as never} layout={{autosize:true,paper_bgcolor:'rgba(0,0,0,0)',plot_bgcolor:dark?'#1c2024':'#fff',font:{color:dark?'#dce1dc':'#303631'},margin:{l:42,r:12,t:20,b:40},xaxis:{gridcolor:dark?'#363d40':'#e2e5e0',zerolinecolor:'#7f8e85',range:[-graphRange,graphRange],title:{text:'x'}},yaxis:{gridcolor:dark?'#363d40':'#e2e5e0',zerolinecolor:'#7f8e85',title:{text:'y'}},showlegend:true,legend:{orientation:'h',y:-.2}}} config={{responsive:true,displaylogo:false}} style={{width:'100%',height:'370px'}}/></div><p className="hint">Use math syntax: <code>sin(x)</code>, <code>x^2</code>, <code>sqrt(x)</code>, <code>log(x)</code>. Angles in graph functions are radians.</p></section>}
       {tab==='history'&&<section className="panel"><div className="panel-heading"><div><p className="eyebrow">LOCAL ON THIS DEVICE</p><h1>Calculation history</h1><p className="muted">Tap a result to reuse its expression.</p></div><button className="outline-button" onClick={()=>setHistory([])}>Clear all</button></div>{history.length===0?<div className="empty-state"><span>↶</span><h3>No calculations yet</h3><p>Your completed calculations will appear here.</p></div>:<div className="history-list">{history.map(item=><button className="history-item" key={item.id} onClick={()=>{setMode(item.mode);setExpr(item.expr);setResult(item.result);setTab('calc')}}><div><span className="history-mode">{modeInfo[item.mode].title} · {item.at}</span><div className="history-expr">{item.expr}</div></div><div className="history-result">{item.result}<small>↗ reuse</small></div></button>)}</div>}</section>}
       {tab==='tools'&&<section className="panel"><div className="panel-heading"><div><p className="eyebrow">QUICK MATH UTILITIES</p><h1>Tools</h1><p className="muted">Handy helpers for common scientific tasks.</p></div><span className="panel-icon">∑</span></div><div className="tool-grid">{[{id:'equation',icon:'x²',name:'Quadratic solver',desc:'Solve ax² + bx + c = 0'},{id:'statistics',icon:'σ',name:'Statistics',desc:'Mean, median, range and σ'},{id:'complex',icon:'ℂ',name:'Complex number',desc:'Modulus and argument'},{id:'convert',icon:'°',name:'Angle converter',desc:'Degrees to radians'}].map(t=><button key={t.id} className={'tool-card '+(tool===t.id?'active':'')} onClick={()=>{setTool(t.id);setToolResult('');setToolInput(t.id==='equation'?'2, -5, 2':t.id==='statistics'?'2, 4, 4, 7, 9':t.id==='complex'?'3, 4':'180')}}><span>{t.icon}</span><b>{t.name}</b><small>{t.desc}</small></button>)}</div><div className="tool-workspace"><label className="field-label">{tool==='equation'?'Coefficients a, b, c':tool==='statistics'?'Comma-separated data':tool==='complex'?'Real, imaginary parts':'Angle in degrees'}</label><input className="tool-input" value={toolInput} onChange={e=>setToolInput(e.target.value)} placeholder="Enter values"/><button className="primary-button" onClick={solveTool}>Calculate <span>→</span></button>{toolResult&&<pre className="tool-result">{toolResult}</pre>}</div><div className="quick-functions"><h3>Start a calculation</h3>{[['sin(30)','sin 30°'],['sqrt(2)','Square root'],['log(100)','Common log'],['(1+2)^3','Powers'],['5!','Factorial'],['pi*2','Constants']].map(([s,l])=><button key={s} onClick={()=>quick(s)}><span>{l}</span><code>{s}</code></button>)}</div></section>}
