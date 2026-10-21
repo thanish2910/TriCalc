@@ -1,0 +1,32 @@
+{
+  "name": "tricalc",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "android:add": "npx cap add android",
+    "android:sync": "npm run build && npx cap sync android",
+    "android:open": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.4.3",
+    "@capacitor/core": "^7.4.3",
+    "mathjs": "^14.8.1",
+    "plotly.js-basic-dist-min": "^3.0.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-plotly.js": "^2.6.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.4.3",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.7",
+    "@types/react-plotly.js": "^2.6.4",
+    "@vitejs/plugin-react": "^4.7.0",
+    "typescript": "~5.8.3",
+    "vite": "^6.3.5"
+  }
+}
