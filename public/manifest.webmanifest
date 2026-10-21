@@ -1,0 +1,19 @@
+{
+  "name": "TriCalc Scientific Calculator",
+  "short_name": "TriCalc",
+  "description": "Three calculator styles in one offline-ready app.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#17191d",
+  "theme_color": "#17191d",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
