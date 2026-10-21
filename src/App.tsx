@@ -136,17 +136,22 @@ export default function App() {
     }
     if (key==='GRAPH' || key==='Y=' || key==='TRACE' || key==='ZOOM' || key==='WINDOW' || key==='TABLE') {setTab('graphs');return}
     if (key==='SETUP' || key==='MODE' || key==='SETTINGS') {setTab('settings');return}
-    if (key==='HOME') {setTab('calc');return}
-    if (key==='BACK' || key==='QUIT') {setTab('calc');return}
-    if (key==='FORMAT') {setResult(v=>v);setNotice('Format options: use Tools for angle conversion and scientific results.');return}
+    if (key==='HOME') {setTab('calc');setExpr('');setNotice('');return}
+    if (key==='BACK') {setExpr(v=>v.slice(0,-1));return}
+    if (key==='QUIT') {setTab('calc');return}
+    if (key==='FORMAT') {setNotice('Choose DEG/RAD below the calculator or in Settings.');return}
     if (key==='statistics') {setTool('statistics');setTab('tools');return}
     if (key==='equation') {setTool('equation');setTab('tools');return}
-    if (key==='VARIABLE' || key==='FUNCTION' || key==='CATALOG' || key==='TOOLS' || key==='CALC' || key==='∫' || key==='d/dx' || key==='STO→' || key==='RCL' || key==='STAT' || key==='APPS' || key==='PRGM' || key==='VARS' || key==='MATH' || key==='hyp' || key==='ENG' || key==='°′″' || key==='nCr' || key==='nPr') {
-      if (key==='TOOLS' || key==='STAT' || key==='MATH' || key==='APPS') setTab('tools');
-      else setNotice(key+': secondary/menu action is model-inspired; use Tools for the supported calculator utility.');
-      return;
+    if (key==='TOOLS' || key==='CATALOG' || key==='FUNCTION' || key==='VARIABLE' || key==='CALC' || key==='∫' || key==='d/dx' || key==='STO→' || key==='RCL' || key==='STAT' || key==='APPS' || key==='PRGM' || key==='VARS' || key==='MATH' || key==='hyp' || key==='ENG' || key==='°′″' || key==='nCr' || key==='nPr') {
+      if (key==='TOOLS' || key==='STAT' || key==='MATH' || key==='APPS' || key==='CATALOG') {setTab('tools');return}
+      if (key==='CALC') {calc();return}
+      if (key==='ENG') {setExpr(v=>v+'*10^3');return}
+      if (key==='nCr' || key==='nPr') {setNotice(key+' needs two values; enter n and r in Tools → equation/statistics for now.');return}
+      setNotice(key+' is not implemented yet.');return;
     }
-    if (['←','↑','↓','→'].includes(key)) {setNotice('Cursor key: use the expression field controls to continue editing.');return}
+    if (key==='←') {setExpr(v=>v.slice(0,-1));return}
+    if (key==='↑' || key==='↓') {setNotice('Cursor history navigation is not implemented yet.');return}
+    if (key==='→') {return}
     setExpr(v=>v+({'÷':'/','×':'*','−':'-','+':'+',' )':')'}[key]??key));
   };
   const keyButton = (key:string,i:number) => <button key={key+'-'+i} className={'key '+(/^[0-9.]$/.test(key)?'number ':'')+(['=','ENTER','EXE','OK'].includes(key)?'equals ':'')+(['AC','DEL','CLEAR'].includes(key)?'function-key ':'')+(['÷','×','−','+','^','x²','x^□','√','√(','∛','x√','sin','cos','tan','sin⁻¹','cos⁻¹','tan⁻¹','log','ln','10^x','e^x'].includes(key)?'operator ':'')+(['SHIFT','2nd','ALPHA','SETUP','MENU','OPTN','MATH','MODE','ON','Y=','WINDOW','ZOOM','TRACE','GRAPH','HOME','BACK','FORMAT','VARIABLE','FUNCTION','CATALOG','TOOLS','EXE','SETTINGS','PRGM','VARS','STAT','CLEAR','QUIT'].includes(key)?'tiny ':'')} onClick={()=>press(key)}>{key}</button>;
