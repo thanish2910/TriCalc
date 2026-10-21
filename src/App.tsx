@@ -102,9 +102,17 @@ export default function App() {
     const key=shiftActive?(shifted[pressedKey]??pressedKey):pressedKey;
     if (shiftActive) setShiftActive(false);
     if (alphaActive) setAlphaActive(false);
-    if (key==='AC' || key==='CLEAR') {setExpr('');setResult('0');return}
+    if (key==='AC' || key==='CLEAR') {setExpr('');setResult('0');setNotice('');return}
     if (key==='DEL' || key==='BACKSPACE') {setExpr(v=>v.slice(0,-1));return}
-    if (key==='=' || key==='ENTER' || key==='EXE' || key==='OK') {calc();return}
+    if (key==='=' || key==='ENTER' || key==='EXE' || key==='OK') {
+      // Let users finish a trailing opening bracket naturally; mathjs will report incomplete expressions.
+      calc();return
+    }
+    // Explicitly map arithmetic and bracket keys to valid mathjs expression characters.
+    if (key==='×' || key==='*') {setExpr(v=>v+'*');return}
+    if (key==='÷' || key==='/') {setExpr(v=>v+'/');return}
+    if (key==='−') {setExpr(v=>v+'-');return}
+    if (key==='(' || key===')') {setExpr(v=>v+key);return}
     if (key==='ON') {setExpr('');setResult('0');return}
     if (key==='Ans' || key==='ANS') {setExpr(v=>v+'Ans');return}
     if (key==='(-)' || key==='(-') {setExpr(v=>v+'(-');return}
