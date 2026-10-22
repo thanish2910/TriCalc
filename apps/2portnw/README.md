@@ -11,5 +11,5 @@ Create a Vercel project connected to this repository and set the Root Directory 
 ## Engineering notes
 - Variable selection alone does not uniquely determine a two-port network's parameters. A known parameter set or sufficient independent test measurements/equations are required.
 - Singular conversions are reported rather than silently returning invalid values.
-- Parameter conversion uses the convention stated on screen. ABCD is expressed as V₁ = A V₂ + B I₂ and I₁ = C V₂ + D I₂, with I₂ defined as entering port 2.
+- Parameter conversion uses the convention stated on screen. ABCD is expressed as V₁ = A V₂ − B I₂ and I₁ = C V₂ − D I₂, with I₂ defined as entering port 2.
 - The first release focuses on linear two-port parameter conversions. The passive/active physical realizability of a network is not automatically verified by matrix conversion.
